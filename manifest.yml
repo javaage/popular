@@ -8,7 +8,7 @@
 applications:
   - name: popular # Step 1: Change your application name
     buildpack: staticfile_buildpack 
-    #path: dist
+    path: .
     memory: 64M
     stack: cflinuxfs2
 

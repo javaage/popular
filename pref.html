@@ -135,12 +135,12 @@
             <script src="js/bootstrap.min.js"></script>
             <script src="js/jquery.jsontotable.min.js"></script>
             <script type="text/javascript">
-                var dailyUrlTmp = "http://image.sinajs.cn/newchart/daily/n/sh600000.gif";
-                var miniteUrlTmp = "http://image.sinajs.cn/newchart/min/n/sh600000.gif";
+                var dailyUrlTmp = "https://image.sinajs.cn/newchart/daily/n/sh600000.gif";
+                var miniteUrlTmp = "https://image.sinajs.cn/newchart/min/n/sh600000.gif";
                 var maxImgWidth = document.body.clientWidth * 0.9;
                 function getCounter() {
                     $.ajax({
-                        url : "http://ichess.sinaapp.com/pref.php",
+                        url : "https://ichess.sinaapp.com/pref.php",
                         context : document.body,
                         success : function(data) {
                             $("#jsontotable-rate").empty();
@@ -186,7 +186,7 @@
                     };
                     $.ajax({
                         type : "POST",
-                        url : "http://ichess.sinaapp.com/prefprice.php",
+                        url : "https://ichess.sinaapp.com/prefprice.php",
                         data : post,
                         success : function(data) {
                             data = eval('(' + data + ')');
@@ -242,7 +242,7 @@
                     };
                     $.ajax({
                         type : "POST",
-                        url : "http://ichess.sinaapp.com/prefprice.php",
+                        url : "https://ichess.sinaapp.com/prefprice.php",
                         data : post,
                         success : function(data) {
                             data = eval('(' + data + ')');
@@ -258,7 +258,7 @@
                 function getTrend() {
                     ////preSell,sell,preBuy,buy
                     $.ajax({
-                        url : "http://ichess.sinaapp.com/getaction.php",
+                        url : "https://ichess.sinaapp.com/getaction.php",
                         success : function(data) {
                             data = eval('(' + data + ')');
                             switch(data.action) {
