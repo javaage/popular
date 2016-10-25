@@ -16,8 +16,14 @@
         <!--[if IE]><script lang="javascript" type="text/javascript" src="js/excanvas.js"></script><![endif]-->
 
         <script lang="javascript" type="text/javascript">
-            var n = 1, t = 0;
             var oldData = [];
+            oldData[1] = [];
+            oldData[5] = [];
+            oldData[20] = [];
+            oldData[100] = [];
+
+            
+            var t = 0;
             var background = {
                 type : 'linearGradient',
                 x0 : 0,
@@ -33,18 +39,6 @@
                 }]
             };
 
-            var data1 = [];
-            var data2 = [];
-            var data3 = [];
-            var data4 = [];
-            var data5 = [];
-            var data6 = [];
-            var data7 = [];
-            var gt = [];
-            var lt = [];
-            var yValue1 = 50;
-            var yValue2 = 200;
-            var delta = 0; 
             var isPlay = false;
             var sellNotification = false;
 
@@ -54,6 +48,7 @@
                     return svalue ? svalue[1] : svalue;
                 }
             };
+
             if(Request.QueryString("n") > 0){
                 n = Request.QueryString("n");
             }else{
@@ -65,7 +60,7 @@
                 t = 0;
             }
 
-            function getCounter() {
+            function getCounter(n) {
                 $.ajax({
                     url : "https://ichess.sinaapp.com/other/cy.php",
                     data : {
@@ -75,19 +70,22 @@
                     context : document.body,
                     success : function(data) {
                         data = eval('(' + data + ')');
-                        data = data.concat(oldData);
-                        oldData = data;
+                        data = data.concat(oldData[n]);
+                        oldData[n] = data;
                         
-                            data1 = [];
-                            data2 = [];
-                            data3 = []; 
-                            data4 = [];
-                            data5 = [];
-                            data6 = [];
-                            data7 = [];
+                            var data1 = [];
+                            var data2 = [];
+                            var data3 = []; 
+                            var data4 = [];
+                            var data5 = [];
+                            var data6 = [];
+                            var data7 = [];
                             
+                            var gt = [];
+                            var lt = [];
+
                             var mid = Math.floor(n/2);
-                            delta = data[mid].dex - data[mid].strong; 
+                            var delta = data[mid].dex - data[mid].strong; 
                             
                             var min = 100000;
                             for (var i = 0; i < data.length; i++) {
@@ -156,10 +154,10 @@
                                 isPlay = false;
                             }
                             
-                            $('#jqChart').jqChart({
+                            $('#jqChart' + n).jqChart({
                                 title : {
-                                    text : 'Popular Index',
-                                    font : '18px sans-serif'
+                                    text : 'Popular Index'+n,
+                                    font : '12px sans-serif'
                                 },
                                 axes : [{
                                     type : 'linear',
@@ -179,6 +177,9 @@
                                     vLine : {
                                         strokeStyle : '#cc0a0c'
                                     }
+                                },
+                                legend : {
+                                    visible : false
                                 },
                                 series : [{
                                     title : 'Index',
@@ -218,13 +219,13 @@
                                 }]
                             });
                             // silder();
-                            setTimeout(getCounter,1000);
+                            setTimeout("getCounter(" + n + ")",1000);
                         
                     },
                     error : function(err) {
-                        oldData = [];
+                        oldData[n] = [];
                         t = 0;
-                        setTimeout(getCounter,1000);
+                        setTimeout("getCounter(" + n + ")",1000);
                         console.log(err);
                     }
                 });
@@ -237,7 +238,10 @@
             }
 
             function refresh() {
-                getCounter();
+                getCounter(1);
+                getCounter(5);
+                getCounter(20);
+                getCounter(100);
                 my();
             }
             
@@ -277,7 +281,14 @@
             <audio id="buymp3" src="wave/buy.mp3"></audio>
             <audio id="psellmp3" src="wave/psell.mp3"></audio>
             <audio id="sellmp3" src="wave/sell.mp3"></audio>
-            <div id="jqChart" style="width: 1000px; height: 720px;"></div>
+            <div>
+                <div id="jqChart1" style="width: 500px; height: 360px;float:left;"></div>
+                <div id="jqChart5" style="width: 500px; height: 360px;float:left;"></div>
+            </div>
+            <div>
+                <div id="jqChart20" style="width: 500px; height: 360px;float:left;"></div>
+                <div id="jqChart100" style="width: 500px; height: 360px;float:left;"></div>
+            </div>
         </div>
     </body>
 </html>
