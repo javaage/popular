@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>index</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <style>
+        </style>
+        <!--[if lt IE 9]>
+        <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="container">
+            <audio id="pbuymp3" src="wave/pbuy.mp3"></audio>
+            <audio id="buymp3" src="wave/buy.mp3"></audio>
+            <audio id="psellmp3" src="wave/psell.mp3"></audio>
+            <audio id="sellmp3" src="wave/sell.mp3"></audio>
+
+            <hr/>
+            <div id="container" style="float:left;width:100%">
+                
+            </div>
+
+            <script src="js/jquery-1.10.2.min.js"></script>
+            <script src="js/bootstrap.min.js"></script>
+            <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+            <script type="text/javascript">
+
+                function getCounter() {
+                    $.ajax({
+                        url : "https://ichess.sinaapp.com/getindex.php",
+                        context : document.body,
+                        success : function(data) {
+                            console.log(data);
+                            var xAxis = [];
+                            var list = [];
+                            var names = [];
+                            var code='';
+                            for(var item in data){
+                                var code = item['code'];
+
+                            }
+
+                            $('#container').highcharts({
+                                title: {
+                                    text: 'Monthly Average Temperature',
+                                    x: -20 //center
+                                },
+                                subtitle: {
+                                    text: 'Source: WorldClimate.com',
+                                    x: -20
+                                },
+                                xAxis: {
+                                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: 'Temperature (°C)'
+                                    },
+                                    plotLines: [{
+                                        value: 0,
+                                        width: 1,
+                                        color: '#808080'
+                                    }]
+                                },
+                                tooltip: {
+                                    valueSuffix: '°C'
+                                },
+                                legend: {
+                                    layout: 'vertical',
+                                    align: 'right',
+                                    verticalAlign: 'middle',
+                                    borderWidth: 0
+                                },
+                                series: [{
+                                    name: 'Tokyo',
+                                    data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                                }, {
+                                    name: 'New York',
+                                    data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+                                }, {
+                                    name: 'Berlin',
+                                    data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+                                }, {
+                                    name: 'London',
+                                    data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+                                }]
+                            });
+                        }
+                    });
+                }
+
+                
+                
+                $(document).ready(function() {
+                    
+                    setInterval("getCounter()", 3000);
+                    
+                });
+
+
+            </script>
+    </body>
+</html>

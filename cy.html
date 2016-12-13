@@ -93,11 +93,15 @@
                                 data1.push([data.length - i, parseFloat(data[i].dex)]);
                                 if(parseFloat(data[i].dex) < min)
                                     min = parseFloat(data[i].dex);
-                                if(data[i].t > t)
+                                if(data[i].t > t + (n-1)*60)
                                     t = data[i].t;
                             }
                             for (var i = 0; i < data.length; i++) {
-                                data7.push([data.length - i, min - 10 + parseFloat(data[i].clmn)/100000 ]);
+                                var cl = parseFloat(data[i].clmn);
+                                if(cl > 100000 * 100){
+                                    cl = 100000 * 100;
+                                }
+                                data7.push([data.length - i, min - 10 + cl/100000]);
                             }
                             
                             for (var i = 1; i < data.length; i++) {
@@ -271,7 +275,23 @@
 
             $(document).ready(function() {
                 refresh();
+
+                $("#jqChart1,#jqChart5,#jqChart20,#jqChart100").dblclick(function(event){
+                        if($(event.target).width()==1000){
+                            $("#jqChart1,#jqChart5,#jqChart20,#jqChart100").show();
+                            $("#jqChart1,#jqChart5,#jqChart20,#jqChart100").width(500).height(360);
+                        }else{
+                            $("#jqChart1,#jqChart5,#jqChart20,#jqChart100").hide();
+                            $(event.target).parent().show();
+                            $("#jqChart1,#jqChart5,#jqChart20,#jqChart100").width(1000).height(720);
+                        }
+
+                        
+                    });
             });
+            
+
+
         </script>
 
     </head>
@@ -281,6 +301,7 @@
             <audio id="buymp3" src="wave/buy.mp3"></audio>
             <audio id="psellmp3" src="wave/psell.mp3"></audio>
             <audio id="sellmp3" src="wave/sell.mp3"></audio>
+
             <div>
                 <div id="jqChart1" style="width: 500px; height: 360px;float:left;"></div>
                 <div id="jqChart5" style="width: 500px; height: 360px;float:left;"></div>
@@ -289,6 +310,7 @@
                 <div id="jqChart20" style="width: 500px; height: 360px;float:left;"></div>
                 <div id="jqChart100" style="width: 500px; height: 360px;float:left;"></div>
             </div>
+            
         </div>
     </body>
 </html>
