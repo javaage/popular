@@ -29,38 +29,75 @@
             <script src="js/bootstrap.min.js"></script>
             <script type="text/javascript" src="js/highcharts/highstock.src.js"></script>
             <script type="text/javascript">
-
+                var lt = 0;
                                 /**
                 * Create the chart when all data is loaded
                 * @returns {undefined}
                 */
-                            function createChart(seriesOptions) {
+                function createChart(seriesOptions) {
                                 $('#container').highcharts('StockChart', {
                                     rangeSelector : {
                                         selected : 1
                                     },
                                     title : {
-                                        text : 'AAPL Stock Price'
+                                        text : 'wave'
                                     },
+                                    yAxis: [{
+                                        title: {  
+                                            text: '成功率 (%)',  
+                                            style: {  
+                                                color: '#89A54E'  
+                                            }  
+                                        },  
+                                        labels: {  
+                                            format: '{value}',
+                                            style: {  
+                                                color: '#89A54E'  
+                                            }  
+                                        },
+                                        opposite: false 
+                                    }, {
+                                        title: {  
+                                            text: '发送数 (条)',  
+                                            style: {  
+                                                color: '#4572A7'  
+                                            }  
+                                        },  
+                                        labels: {  
+                                            format: '{value} %',  
+                                            style: {  
+                                                color: '#4572A7'  
+                                            }  
+                                        },
+                                        opposite: true
+                                    }],  
                                     series : seriesOptions
                                 });
-                            }
+                }
 
                 function getCounter() {
                     $.ajax({
-                        url : "https://ichess.sinaapp.com/getindex.php?codes=sz000039",
+                        url : "https://ichess.sinaapp.com/getindex.php",
                         context : document.body,
+                        data: {
+                            codes:'sz000039',
+                            //lt:lt
+                        },
                         success : function(data) {
                             console.log(data);
                             data = eval('(' + data + ')');
+                            var lst = data[0]['data'];
+                            if(lst && lst.length > 0){
+                                lt = lst[lst.length-1][0];
+                            }
                             createChart(data);
                         }
                     });
                 }
                 
                 $(document).ready(function() {
-                    //createChart();
-                    setInterval("getCounter()", 3000);
+                    getCounter();
+                    setInterval("getCounter()", 60000);
                     
                 });
 
