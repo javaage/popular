@@ -1,36 +1,47 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang='zh-CN'>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
         <title>index</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href='css/bootstrap.min.css' rel='stylesheet'>
         <style>
         </style>
         <!--[if lt IE 9]>
-        <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+        <script src='//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js'></script>
+        <script src='//cdn.bootcss.com/respond.js/1.4.2/respond.min.js'></script>
         <![endif]-->
     </head>
     <body>
-        <div class="container">
-            <audio id="pbuymp3" src="wave/pbuy.mp3"></audio>
-            <audio id="buymp3" src="wave/buy.mp3"></audio>
-            <audio id="psellmp3" src="wave/psell.mp3"></audio>
-            <audio id="sellmp3" src="wave/sell.mp3"></audio>
+        <div class='container'>
+            <audio id='pbuymp3' src='wave/pbuy.mp3'></audio>
+            <audio id='buymp3' src='wave/buy.mp3'></audio>
+            <audio id='psellmp3' src='wave/psell.mp3'></audio>
+            <audio id='sellmp3' src='wave/sell.mp3'></audio>
 
             <hr/>
-            <div id="container" style="float:left;width:100%">
+            <div id='container' style='float:left;width:100%'>
                 
             </div>
 
-            <script src="js/jquery-1.10.2.min.js"></script>
-            <script src="js/bootstrap.min.js"></script>
-            <script type="text/javascript" src="js/highcharts/highstock.src.js"></script>
-            <script type="text/javascript">
-                var lt = 0;
-                                /**
+            <script src='js/jquery-1.10.2.min.js'></script>
+            <script src='js/bootstrap.min.js'></script>
+            <script type='text/javascript' src='js/highcharts/highstock.src.js'></script>
+            <script type='text/javascript'>
+                var codes = 'sz002594,sz002385';
+                console.log((new Date()).getTime());
+                var lt = (new Date()).getTime() - 24 * 60 * 60 * 1000;
+                var Request = {
+                    QueryString : function(item){
+                        var svalue = location.search.match(new RegExp('[\?\&]' + item + '=([^\&]*)(\&?)','i'));
+                        return svalue ? svalue[1] : svalue;
+                    }
+                };  
+                var seriesOptions = {}; 
+
+
+                /**
                 * Create the chart when all data is loaded
                 * @returns {undefined}
                 */
@@ -42,50 +53,23 @@
                                     title : {
                                         text : 'wave'
                                     },
-                                    yAxis: [{
-                                        title: {  
-                                            text: '成功率 (%)',  
-                                            style: {  
-                                                color: '#89A54E'  
-                                            }  
-                                        },  
-                                        labels: {  
-                                            format: '{value}',
-                                            style: {  
-                                                color: '#89A54E'  
-                                            }  
-                                        },
-                                        opposite: false 
-                                    }, {
-                                        title: {  
-                                            text: '发送数 (条)',  
-                                            style: {  
-                                                color: '#4572A7'  
-                                            }  
-                                        },  
-                                        labels: {  
-                                            format: '{value} %',  
-                                            style: {  
-                                                color: '#4572A7'  
-                                            }  
-                                        },
-                                        opposite: true
-                                    }],  
                                     series : seriesOptions
                                 });
                 }
 
                 function getCounter() {
                     $.ajax({
-                        url : "https://ichess.sinaapp.com/getindex.php",
+                        url : 'https://ichess.sinaapp.com/getindex.php',
                         context : document.body,
                         data: {
-                            codes:'sz000039',
+                            codes:codes,
                             //lt:lt
                         },
                         success : function(data) {
-                            console.log(data);
                             data = eval('(' + data + ')');
+                            seriesOptions = $.extend(true,{},seriesOptions,data);
+                            console.log(data);
+
                             var lst = data[0]['data'];
                             if(lst && lst.length > 0){
                                 lt = lst[lst.length-1][0];
@@ -96,9 +80,11 @@
                 }
                 
                 $(document).ready(function() {
+                    if(Request.QueryString('codes') != null){
+                        codes = Request.QueryString('codes');
+                    }
                     getCounter();
-                    setInterval("getCounter()", 60000);
-                    
+                    setInterval('getCounter()', 60000);
                 });
 
             </script>
