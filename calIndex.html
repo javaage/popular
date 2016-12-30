@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>index</title>
+        <link href='css/bootstrap.min.css' rel='stylesheet'>
+        <style>
+        </style>
+        <!--[if lt IE 9]>
+        <script src='//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js'></script>
+        <script src='//cdn.bootcss.com/respond.js/1.4.2/respond.min.js'></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class='container'>
+            <select id="levelSelect" onchange="changeLevel()">
+              <option value ="5">5</option>
+              <option value ="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+            </select>
+            <div id="container"></div>
+
+        </div>    
+    </body>
+    <script src='js/jquery-1.10.2.min.js'></script>
+            <script src='js/bootstrap.min.js'></script>
+            <script type='text/javascript' src='js/highcharts/highstock.src.js'></script>
+            <script type='text/javascript'>
+            function changeLevel(){
+                var level = $('#levelSelect').val();
+                getCounter(level);
+            }
+                function createChart(data) {
+                    $('#container').highcharts('StockChart', {
+                        rangeSelector : {
+                            selected : 1
+                        },
+                        title : {
+                            text : 'cal'
+                        },
+                        series : [{
+                            name : 'real',
+                            data : data.reals,
+                            tooltip: {
+                                valueDecimals: 2
+                            }
+                        },{
+                            name : 'cal',
+                            data : data.cals,
+                            tooltip: {
+                                valueDecimals: 2
+                            }
+                        }]
+                    });
+                }
+
+                function getCounter(n) {
+                    $.ajax({
+                        url : 'https://ichess.sinaapp.com/calindex.php',
+                        context : document.body,
+                        data: {
+                            n:n
+                        },
+                        success : function(data) {
+                            data = eval('(' + data + ')');
+                            createChart(data);
+                        }
+                    });
+                }
+                
+                $(document).ready(function() {
+                    getCounter(5);
+                });
+
+            </script>
+</html>

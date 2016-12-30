@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>action</title>
+        <title>holder</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <style>
         </style>
@@ -19,28 +19,6 @@
             <audio id="buymp3" src="wave/buy.mp3"></audio>
             <audio id="psellmp3" src="wave/psell.mp3"></audio>
             <audio id="sellmp3" src="wave/sell.mp3"></audio>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-2">
-                        <span>推荐买入价格: </span><span id="spanBuy"></span>
-                    </div>
-                    <div class="col-md-2">
-                        <span>推荐卖出价格: </span><span id="spanSell"></span>
-                    </div>
-                    <div class="col-md-2">
-                        <span>当前价格: </span><span id="spanCurrent"></span>
-                    </div>
-                    <div class="col-md-2">
-                        <span>当日最高价格: </span><span id="spanHigh"></span>
-                    </div>
-                    <div class="col-md-2">
-                        <span>当日最低价格: </span><span id="spanLow"></span>
-                    </div>
-                    <div class="col-md-2">
-
-                    </div>
-                </div>
-            </div>
             <hr/>
             <div style="float:left;width:100%">
                 <div id="jsontotable-rate" class="jsontotable">
@@ -63,19 +41,52 @@
                         <div class="modal-body">
                             <table class="table">
                                 <tr>
-                                    <td>时间</td>
-                                    <td id="time"></td>
+                                    <td>推荐买入价格</td>
+                                    <td id="prefBuy"></td>
                                 </tr>
                                 <tr>
-                                    <td>消息</td>
-                                    <td id="message"></td>
+                                    <td>推荐卖出价格</td>
+                                    <td id="prefSell"></td>
                                 </tr>
                                 <tr>
-                                    <td>关注</td>
-                                    <td id="action"></td>
+                                    <td>当前价格</td>
+                                    <td id="current"></td>
+                                </tr>
+                                <tr>
+                                    <td>当日最高价格</td>
+                                    <td id="high"></td>
+                                </tr>
+                                <tr>
+                                    <td>当日最低价格</td>
+                                    <td id="low"></td>
                                 </tr>
                             </table>
-                            
+                            <div>
+                                <!-- Nav tabs -->
+                                <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active">
+                                        <a href="#minite" aria-controls="home" role="tab" data-toggle="tab">分时图</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#daily" aria-controls="profile" role="tab" data-toggle="tab">日线图</a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="minite">
+                                        <div id="divMinite" class="item active">
+                                            <img id="imgMinite">
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="daily">
+                                        <div id="divDaily" class="item">
+                                            <img id="imgDaily">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                                 <!-- Indicators -->
                                 <ol class="carousel-indicators">
@@ -107,7 +118,7 @@
                 var maxImgWidth = document.body.clientWidth * 0.9;
                 function getCounter() {
                     $.ajax({
-                        url : "https://ichess.sinaapp.com/actionList.php",
+                        url : "https://ichess.sinaapp.com/holder.php",
                         context : document.body,
                         success : function(data) {
                             $("#jsontotable-rate").empty();
@@ -116,15 +127,15 @@
                                 className : "table table-hover",
                                 header : false
                             });
-                            //addDetail();
-                            //addHeader();
+                            addDetail();
+                            addHeader();
 
                         }
                     });
                 }
 
                 function addHeader() {
-                    var th = $("<thead><tr><th>代码</th><th>名称</th><th>卖出信号</th><th>买入信号</th><th>买入价格</th><th>卖出价格</th><th>当前价格</th><th>当日最高</th><th>当日最低</th><th>涉及概念</th><th></th></tr></thead>");
+                    var th = $("<thead><tr><th>代码</th><th>名称</th><th>信号量</th><th>趋势</th><th>当前价格</th><th>涨幅</th><th>详细</th></tr></thead>");
                     $("#jsontotable-rate table").prepend(th);
                 }
 
@@ -273,12 +284,12 @@
                 }
 
                 function refresh(){
-                    getTrend();
+                    //getTrend();
                     getCounter();
                 }
                 
                 $(document).ready(function() {
-                    getAction();
+                    //getAction();
                     setInterval("refresh()", 3000);
                     $(document).click(function() {
                         if (player) {

@@ -18,10 +18,6 @@
         <script lang="javascript" type="text/javascript">
             var oldData = [];
             oldData[1] = [];
-            oldData[5] = [];
-            oldData[20] = [];
-            oldData[100] = [];
-
             
             var t = 0;
             var background = {
@@ -186,11 +182,6 @@
                                     visible : false
                                 },
                                 series : [{
-                                    title : 'Column',
-                                    type : 'column',
-                                    data : data7,
-                                    markers : null
-                                }, {
                                     title : 'Index',
                                     type : 'line',
                                     data : data1,
@@ -204,23 +195,28 @@
                                     title : 'Buy point',
                                     type : 'scatter',
                                     data : data3,
-                                    markers: { type: 'circle', size: 6 }
+                                    markers: { type: 'circle', size: 12 }
                                 }, {
                                     title : 'Sell point',
                                     type : 'scatter',
                                     data : data4,
-                                    markers: { type: 'circle', size: 6 }
-                                }/**, {
+                                    markers: { type: 'circle', size: 12 }
+                                }, {
                                     title : 'Pre Buy point',
                                     type : 'scatter',
                                     data : data5,
-                                    markers: { type: 'circle', size: 4 }
+                                    markers: { type: 'circle', size: 8 }
                                 }, {
                                     title : 'Pre Sell point',
                                     type : 'scatter',
                                     data : data6,
-                                    markers: { type: 'circle', size: 4 }
-                                }*/]
+                                    markers: { type: 'circle', size: 8 }
+                                }, {
+                                    title : 'Column',
+                                    type : 'column',
+                                    data : data7,
+                                    markers : null
+                                }]
                             });
                             // silder();
                             setTimeout("getCounter(" + n + ")",1000);
@@ -243,9 +239,6 @@
 
             function refresh() {
                 getCounter(1);
-                getCounter(5);
-                getCounter(20);
-                getCounter(100);
                 my();
             }
             
@@ -275,23 +268,7 @@
 
             $(document).ready(function() {
                 refresh();
-
-                $("#jqChart1,#jqChart5,#jqChart20,#jqChart100").dblclick(function(event){
-                        if($(event.target).width()==1000){
-                            $("#jqChart1,#jqChart5,#jqChart20,#jqChart100").show();
-                            $("#jqChart1,#jqChart5,#jqChart20,#jqChart100").width(500).height(360);
-                        }else{
-                            $("#jqChart1,#jqChart5,#jqChart20,#jqChart100").hide();
-                            $(event.target).parent().show();
-                            $("#jqChart1,#jqChart5,#jqChart20,#jqChart100").width(1000).height(720);
-                        }
-
-                        
-                    });
             });
-            
-
-
         </script>
 
     </head>
@@ -303,12 +280,7 @@
             <audio id="sellmp3" src="wave/sell.mp3"></audio>
 
             <div>
-                <div id="jqChart1" style="width: 500px; height: 360px;float:left;"></div>
-                <div id="jqChart5" style="width: 500px; height: 360px;float:left;"></div>
-            </div>
-            <div>
-                <div id="jqChart20" style="width: 500px; height: 360px;float:left;"></div>
-                <div id="jqChart100" style="width: 500px; height: 360px;float:left;"></div>
+                <div id="jqChart1" style="width: 1000px; height: 720px;float:left;"></div>
             </div>
             
         </div>
